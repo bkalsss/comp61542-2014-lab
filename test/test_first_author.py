@@ -3,8 +3,8 @@ Created on 23 Mar 2014
 
 @author: mbaxkgo2
 '''
-import unittest
-
+import unittest 
+from comp61542.database import database
 
 class TestFirst(unittest.TestCase):
 
@@ -12,7 +12,7 @@ class TestFirst(unittest.TestCase):
         pass
 
     def test_first_author_publications(self):
-        pass
+        self.assertEqual(darabase.mean([]), 0)
 
 
 if __name__ == "__main__":
