@@ -210,6 +210,7 @@ class Database:
 
 
     def get_publications_by_author(self):
+        
         header = ("Author", "Number of conference papers",
             "Number of journals", "Number of books",
             "Number of book chapers", "Total")
@@ -219,6 +220,39 @@ class Database:
             for a in p.authors:
                 astats[a][p.pub_type] += 1
 
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+            for i in range(len(astats)) ]
+        return (header, data)
+
+    def get_first_publications_by_author(self): 
+        header = ("Author", "Number of conference papers",
+            "Number of journals", "Number of books",
+            "Number of book chapers", "Total")
+
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            print p.authors
+            if len(p.authors) > 1 :
+                astats[p.authors[0]][p.pub_type] += 1
+            else :
+                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+            for i in range(len(astats)) ]
+        return (header, data)
+
+    def get_last_publications_by_author(self): 
+        header = ("Author", "Number of conference papers",
+            "Number of journals", "Number of books",
+            "Number of book chapers", "Total")
+
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            print len(p.authors)
+            if len(p.authors) > 1 :
+                astats[p.authors[len(p.authors) - 1]][p.pub_type] += 1
+            else :
+                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
+                astats[p.authors[0]][p.pub_type] += 1
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         return (header, data)

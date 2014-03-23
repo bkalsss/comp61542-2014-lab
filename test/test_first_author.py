@@ -6,12 +6,12 @@ Created on 23 Mar 2014
 import unittest
 
 
-class Test(unittest.TestCase):
+class TestFirst(unittest.TestCase):
 
     def setUp(self):
         pass
 
-    def testName(self):
+    def test_first_author_publications(self):
         pass
 
 
