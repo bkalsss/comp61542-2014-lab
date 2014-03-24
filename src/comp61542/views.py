@@ -95,36 +95,56 @@ def showSearchAuthorToFindCoauthors():
     args = {"dataset":dataset}
     args["title"] = "Search By Author"
     
-    author = None
+    author = "klakal"
     args["data"] = []
-    
+#     args["author"] = author
+#     args["data"] = db.get_coauthor_details("Stefano Ceri")
+#     print args["data"]
+#     print " klikli" 
+#     print args["author"] 
+# 
+#     start_year = db.min_year
+#     if "start_year" in request.args:
+#         start_year = int(request.args.get("start_year"))
+#              
+#     end_year = db.max_year
+#     if "end_year" in request.args:
+#         end_year = int(request.args.get("end_year"))
+#              
+#     pub_type = 4
+#     if "pub_type" in request.args:
+#         pub_type = int(request.args.get("pub_type"))
+#     args["data"] = db.get_coauthor_data(start_year, end_year, pub_type)
+#     get_coauthor_data = db.get_coauthor_data(start_year, end_year, pub_type)
+    data = []
     if "author" in request.args:
         author = request.args.get("author")
         args["author"] = author
-         
-        get_publications_by_author = db.get_publications_by_author()
-         
-        for x in get_publications_by_author[1]:
-            #print 'x --- ', x
-            if author == x[0]:
-                
-                start_year = db.min_year
-                if "start_year" in request.args:
-                    start_year = int(request.args.get("start_year"))
-            
-                end_year = db.max_year
-                if "end_year" in request.args:
-                    end_year = int(request.args.get("end_year"))
-            
-                pub_type = 4
-                if "pub_type" in request.args:
-                    pub_type = int(request.args.get("pub_type"))
-            
-
-                args["data"] = db.get_coauthor_data(start_year, end_year, pub_type)
+        print "KJSDBVKJDSKJVDKSJVBSDKVBDSKVDKSBJVKJBSDBVKSDKJVSDBKHVSDkjb"   
+#         print len(get_coauthor_data[1])
+        get_coauthor_details = db.get_coauthor_details(author)
+        print len(get_coauthor_details)
+        for ix in get_coauthor_details:
+            if ix[0]!= author:
+                print ix[0]
+                data.append(ix[0])
+        print data
+        args["data"] = data
+# #         get_all_authors = db.get_all_authors()
+# #         print db.get_all_authors()
+#         for x in get_coauthor_data[1]:
+#             print x[0]
+# #             print x
+#             #print 'x --- ', x
+#             if author == x[0]:
+#                 print "1111KJSDBVKJDSKJVDKSJVBSDKVBDSKVDKSBJVKJBSDBVKSDKJVSDBKHVSDkjb"
+# #                  
 
     
-    return render_template('searchauthorstofindcoauthors.html', args=args)
+#         args["data"] = db.get_coauthor_details("Stefano Ceri")
+#         print args["data"]
+    
+    return render_template('searchauthortofindcoauthors.html', args=args)
 
 @app.route("/searchauthor")
 def showSearchAuthor():
