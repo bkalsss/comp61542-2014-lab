@@ -4,7 +4,6 @@
 <h1>{{ args.title }}</h1>
 
 <form name="input" action="/searchauthortofindcoauthors" method="get">
-	<table border="1">
 		<tr>
 			<td>
 				<input type="text" name="author" id="author" />
@@ -13,20 +12,22 @@
 				<input type="submit" value="Search" />
 			</td>
 		</tr>
-	</table>
+
 	</form>
 <p>
 		{{ args.author }}
 	</p>
 	<br />
 	
-	<table>
-		<tr>
+<table border="1" id="myTable" class="tablesorter">
+		<tbody>
+		
 			<td>
 				{% for column in args.data %}
       				<tr>{{ column }}</tr>
       				<br />
     			{% endfor %}
 				</td>
+			</tbody>
 		</table>
 {% endblock %}
