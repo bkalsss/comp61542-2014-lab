@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+<h1>{{ args.title }}</h1>
+
+<form name="input" action="/searchauthor" method="get">
+	<table border="1">
+		<tr>
+			<td>
+				<input type="text" name="author" id="author" />
+			</td>
+			<td>
+				<input type="submit" value="Search" />
+			</td>
+		</tr>
+	</table>
+	</form>
+	<br />
+	
+	{% if args.overallPublications != 0 %}
+	<p>
+		{{ args.author }}
+	</p>
+	<br />
+	
+	<table border="1">
+		<tr>
+			<td>
+				Overall Number of Publications
+			</td>
+			<td>
+				Number of Conference Papers
+			</td>
+			<td>
+				Number of Journal Articles
+			</td>
+			<td>
+				Number of Books
+			</td>
+			<td>
+				Number of Book Chapters
+			</td>
+			<td>
+				Number of Co-Authors
+			</td>
+			<td>
+				Number of Publications Appeared First
+			</td>
+			<td>
+				Number of Publications Appeared Last
+			</td>
+		</tr>
+		<tr>
+			<td>
+				{{ args.overallPublications }}
+			</td>
+			<td>
+				{{ args.numConferencePaper }}
+			</td>
+			<td>
+				{{ args.numJournalArticle }}
+			</td>
+			<td>
+				{{ args.numBook }}
+			</td>
+			<td>
+				{{ args.numBookChapters }}
+			</td>
+			<td>
+				{{ args.numCoAuthors }}
+			</td>
+		</tr>
+		<tr>
+			<td>
+				
+			</td>
+		</tr>
+	</table>
+	{% endif %}
+{% endblock %}

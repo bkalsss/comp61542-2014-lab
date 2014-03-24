@@ -88,6 +88,91 @@ def showCoAuthors():
     args["pub_str"] = PUB_TYPES[pub_type]
     return render_template("coauthors.html", args=args)
 
+@app.route("/searchauthortofindcoauthors")
+def showSearchAuthorToFindCoauthors():
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset}
+    args["title"] = "Search By Author"
+    
+    author = None
+    args["data"] = []
+    
+    if "author" in request.args:
+        author = request.args.get("author")
+        args["author"] = author
+         
+        get_publications_by_author = db.get_publications_by_author()
+         
+        for x in get_publications_by_author[1]:
+            #print 'x --- ', x
+            if author == x[0]:
+                
+                start_year = db.min_year
+                if "start_year" in request.args:
+                    start_year = int(request.args.get("start_year"))
+            
+                end_year = db.max_year
+                if "end_year" in request.args:
+                    end_year = int(request.args.get("end_year"))
+            
+                pub_type = 4
+                if "pub_type" in request.args:
+                    pub_type = int(request.args.get("pub_type"))
+            
+
+                args["data"] = db.get_coauthor_data(start_year, end_year, pub_type)
+
+    
+    return render_template('searchauthorstofindcoauthors.html', args=args)
+
+@app.route("/searchauthor")
+def showSearchAuthor():
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset}
+    args["title"] = "Search By Author"
+    
+    author = None
+    args["data"] = []
+    
+    if "author" in request.args:
+        author = request.args.get("author")
+        args["author"] = author
+        
+        get_publications_by_author = db.get_publications_by_author()
+        
+        for x in get_publications_by_author[1]:
+            #print 'x --- ', x
+            if author == x[0]:
+                print 'x --- ', x[5]
+                
+                # get overall publications
+                args["overallPublications"] = x[5]
+                
+                # get number of conference paper
+                args["numConferencePaper"] = x[1]
+                
+                # get number of journal article
+                args["numJournalArticle"] = x[2]
+                
+                # get number of book
+                args["numBook"] = x[3]
+                
+                # get number of book chapters
+                args["numBookChapters"] = x[4]
+        
+        get_network_data = db.get_network_data()
+        
+        print 'get_coauthor_details ----', get_network_data[0]
+        for a, b in enumerate(get_network_data[0]):
+            print 'b --- ', b
+            if author == b[0]:
+                args["numCoAuthors"] = b[1]
+            
+    
+    return render_template('searchauthor.html', args=args)
+
 @app.route("/")
 def showStatisticsMenu():
     dataset = app.config['DATASET']
