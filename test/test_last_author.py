@@ -24,11 +24,11 @@ class TestFirst(unittest.TestCase):
         
         
         self.assertTrue(db.read(path.join(self.data_dir, "dblp_curated_sample.xml")))
-        header, dat = db.get_first_publications_by_author()
+        header, dat = db.get_last_publications_by_author()
 
-        self.assertEqual(dat[0], ['Stefano Ceri', 28, 43, 3, 4, 78])
-        self.assertEqual(dat[1], ['Piero Fraternali',  0, 0, 0, 0, 0])
-        self.assertEqual(dat[2], ['Carlo Batini', 1, 1, 1, 0, 3])
+        self.assertEqual(dat[0], ['Stefano Ceri', 17, 10, 0, 6, 33])
+        self.assertEqual(dat[1], ['Piero Fraternali',  3, 3, 1, 0, 7])
+        self.assertEqual(dat[2], ['Carlo Batini', 4, 1, 0, 0, 5])
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

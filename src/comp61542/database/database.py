@@ -87,6 +87,20 @@ class Database:
                     display(self, coauthors, ca) for ca in coauthors[a] ]) ])
 
         return (header, data)
+    def get_coauthor_list(self, author):
+        print author
+        author_id = self.author_idx[author]
+        data = self._get_collaborations(author_id, True)
+        dattta =  [ (self.authors[key].name, data[key])
+            for key in data ]
+        dat = []
+
+        for ix in dattta:
+            if ix[0]!= author:
+                print ix[0]
+                dat.append(ix[0])
+        print dat
+        return dat
 
     def get_average_authors_per_publication(self, av):
         header = ("Conference Paper", "Journal", "Book", "Book Chapter", "All Publications")
@@ -208,6 +222,14 @@ class Database:
             for i in range(len(astats)) ]
         return (header, data)
 
+    def get_num_first_publications_by_author(self, author):
+        num = 0
+        for p in self.publications:
+            for a in p.authors:
+                if author == a:
+                    num += 1
+        print num
+        return num
 
     def get_publications_by_author(self):
         
