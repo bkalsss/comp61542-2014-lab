@@ -210,6 +210,10 @@ def showPublicationSummary(status):
         args["title"] = "Publication by Year"
         args["data"] = db.get_publications_by_year()
 
+    if (status == "sole_author"):
+        args["title"] = "Sole Author"
+        args["data"] = db.get_sole_author()
+
     if (status == "author_year"):
         args["title"] = "Author by Year"
         args["data"] = db.get_author_totals_by_year()

@@ -279,6 +279,32 @@ class Database:
             for i in range(len(astats)) ]
         return (header, data)
 
+    def get_sole_author(self):
+        header = ("Author", "First author",
+            "Last author", "Sole author")
+
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        astats2 = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        astats3 = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            if len(p.authors) > 1 :
+                astats[p.authors[0]][p.pub_type] += 1
+
+        for p in self.publications:
+            if len(p.authors) > 1 :
+                astats2[p.authors[len(p.authors) - 1]][p.pub_type] += 1
+            else :
+                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
+                astats2[p.authors[0]][p.pub_type] += 1
+        for p in self.publications:
+            if len(p.authors) == 1 :
+                astats3[p.authors[0]][p.pub_type] += 1
+         
+        data = [ [self.authors[i].name] + [sum(astats[i])] + [sum(astats2[i])] + [sum(astats3[i])]
+            for i in range(len(astats)) ]
+        return (header, data)
+    
+    
     def get_average_authors_per_publication_by_year(self, av):
         header = ("Year", "Conference papers",
             "Journals", "Books",
@@ -417,6 +443,11 @@ class Database:
                 if a < a2:
                     links.add((a, a2))
         return (nodes, links)
+
+    
+
+    
+    
 
 class DocumentHandler(handler.ContentHandler):
     TITLE_TAGS = [ "sub", "sup", "i", "tt", "ref" ]
