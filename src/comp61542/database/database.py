@@ -273,7 +273,6 @@ class Database:
             if len(p.authors) > 1 :
                 astats[p.authors[len(p.authors) - 1]][p.pub_type] += 1
             else :
-                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
                 astats[p.authors[0]][p.pub_type] += 1
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
