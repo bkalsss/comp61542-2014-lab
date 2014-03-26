@@ -278,25 +278,24 @@ class Database:
             for i in range(len(astats)) ]
         return (header, data)
 
-    def get_sole_author(self):
+    def get_sole_author(self, pub_type):
         header = ("Author", "First author",
             "Last author", "Sole author")
-
+        
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         astats2 = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         astats3 = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         for p in self.publications:
-            if len(p.authors) > 1 :
+            if (len(p.authors) > 1 and (pub_type == 4 or pub_type == p.pub_type)):  
                 astats[p.authors[0]][p.pub_type] += 1
 
         for p in self.publications:
-            if len(p.authors) > 1 :
+            if (len(p.authors) > 1 and (pub_type == 4 or pub_type == p.pub_type)):
                 astats2[p.authors[len(p.authors) - 1]][p.pub_type] += 1
-            else :
-                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
+            elif (pub_type == 4 or pub_type == p.pub_type) :
                 astats2[p.authors[0]][p.pub_type] += 1
         for p in self.publications:
-            if len(p.authors) == 1 :
+            if (len(p.authors) == 1 and (pub_type == 4 or pub_type == p.pub_type)):
                 astats3[p.authors[0]][p.pub_type] += 1
          
         data = [ [self.authors[i].name] + [sum(astats[i])] + [sum(astats2[i])] + [sum(astats3[i])]

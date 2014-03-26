@@ -184,6 +184,22 @@ def showStatisticsMenu():
     args = {"dataset":dataset}
     return render_template('statistics.html', args=args)
 
+@app.route("/soleauthor")
+def showSoleAuthor():
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":"soleauthors"}
+    
+    PUB_TYPES = ["Conference Papers", "Journals", "Books", "Book Chapters", "All Publications"]
+    pub_type = 4
+    if "pub_type" in request.args:
+        pub_type = int(request.args.get("pub_type"))
+
+    args["title"] = "Sole Author"
+    args["data"] = db.get_sole_author(pub_type)    
+    args["pub_str"] = PUB_TYPES[pub_type]    
+    return render_template('soleauthor.html', args=args)    
+        
 @app.route("/statisticsdetails/<status>")
 def showPublicationSummary(status):
     dataset = app.config['DATASET']
@@ -210,9 +226,14 @@ def showPublicationSummary(status):
         args["title"] = "Publication by Year"
         args["data"] = db.get_publications_by_year()
 
-    if (status == "sole_author"):
-        args["title"] = "Sole Author"
-        args["data"] = db.get_sole_author()
+#     if (status == "sole_author"):
+#         PUB_TYPES = ["Conference Papers", "Journals", "Books", "Book Chapters", "All Publications"]
+#         pub_type = 4
+#         if "pub_type" in request.args:
+#             pub_type = int(request.args.get("pub_type"))
+#         args["pub_str"] = PUB_TYPES[pub_type]
+#         args["title"] = "Sole Author"
+#         args["data"] = db.get_sole_author()
 
     if (status == "author_year"):
         args["title"] = "Author by Year"
