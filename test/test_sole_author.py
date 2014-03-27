@@ -25,10 +25,23 @@ class TestFirst(unittest.TestCase):
         
         
         self.assertTrue(db.read(path.join(self.data_dir, "dblp_curated_sample.xml")))
-        header, dat = db.get_sole_author()
+        header, dat = db.get_sole_author(4)
         
+        self.assertEqual(dat[0], ['Stefano Ceri', 78 , 33, 8])        
         self.assertEqual(dat[53], ['Khalid Belhajjame', 19 , 4, 2])
+        self.assertEqual(dat[1], ['Piero Fraternali', 0 , 7, 0])
 
+
+    def test_sole_author_by_publication(self):
+        db = database.Database()
+        
+        
+        self.assertTrue(db.read(path.join(self.data_dir, "dblp_curated_sample.xml")))
+        header, dat = db.get_sole_author(2)
+        
+        self.assertEqual(dat[0], ['Stefano Ceri', 3 , 0, 0])        
+        self.assertEqual(dat[53], ['Khalid Belhajjame', 0 , 0, 0])
+        self.assertEqual(dat[1], ['Piero Fraternali', 0 , 1, 0])
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
