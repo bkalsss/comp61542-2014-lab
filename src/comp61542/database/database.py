@@ -256,8 +256,7 @@ class Database:
             print p.authors
             if len(p.authors) > 1 :
                 astats[p.authors[0]][p.pub_type] += 1
-            else :
-                print "kdfgkjhghfnkgkgfjdgfdgkjdfgfdkjgfdgbdfkgbfd"
+
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         return (header, data)
@@ -272,8 +271,7 @@ class Database:
             print len(p.authors)
             if len(p.authors) > 1 :
                 astats[p.authors[len(p.authors) - 1]][p.pub_type] += 1
-            else :
-                astats[p.authors[0]][p.pub_type] += 1
+            
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         return (header, data)
@@ -292,7 +290,7 @@ class Database:
         for p in self.publications:
             if (len(p.authors) > 1 and (pub_type == 4 or pub_type == p.pub_type)):
                 astats2[p.authors[len(p.authors) - 1]][p.pub_type] += 1
-            elif (pub_type == 4 or pub_type == p.pub_type) :
+            elif (len(p.authors) > 1 and pub_type == 4 or pub_type == p.pub_type) :
                 astats2[p.authors[0]][p.pub_type] += 1
         for p in self.publications:
             if (len(p.authors) == 1 and (pub_type == 4 or pub_type == p.pub_type)):
