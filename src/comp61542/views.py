@@ -126,56 +126,33 @@ def showSearchAuthor():
     if "author" in request.args:
         author = request.args.get("author")
         args["author"] = author
-        print "ALALALALALALALALALALALALALALALALALALALALALALA"
-        print  db.get_num_first_publications_by_author(author)
-        get_publications_by_author = db.get_publications_by_author()
-        
-        for x in get_publications_by_author[1]:
-            #print 'x --- ', x
-            if author == x[0]:
-                print 'x --- ', x[5]
-                
-                # get overall publications
-                args["overallPublications"] = x[5]
-                
+        print "dfkjhdskjfhdkjsdhkfjhsdkjfdskjfdskjh"
+        get_search_author = db.get_search_author(author)
+        print "BUAUAUAHAHAHAHAHAHAAHAH"
+        data = get_search_author
+        print author
+        # get overall publications
+        args["overallPublications"] = data[5]
+                 
                 # get number of conference paper
-                args["numConferencePaper"] = x[1]
-                
+        args["numConferencePaper"] = data[1]
+                 
                 # get number of journal article
-                args["numJournalArticle"] = x[2]
-                
+        args["numJournalArticle"] = data[2]
+                 
                 # get number of book
-                args["numBook"] = x[3]
-                
+        args["numBook"] = data[3]
+                 
                 # get number of book chapters
-                args["numBookChapters"] = x[4]
+        args["numBookChapters"] = data[4]
         
-        get_network_data = db.get_network_data()
-        
-        print 'get_coauthor_details ----', get_network_data[0]
-        for a, b in enumerate(get_network_data[0]):
-            print 'b --- ', b
-            if author == b[0]:
-                args["numCoAuthors"] = b[1]
-                get_first_publications_by_author = db.get_first_publications_by_author()
-        
-        for y in get_first_publications_by_author[1]:
-            #print 'x --- ', x
-            if author == y[0]:
-            
-                # total of author appeared first
-                args["appearFirstAuthor"] = y[5]
-                
-        get_last_publications_by_author = db.get_last_publications_by_author()
-        
-        for z in get_last_publications_by_author[1]:
-            #print 'x --- ', x
-            if author == z[0]:
-            
-                # total of author appeared last
-                args["appearLastAuthor"] = z[5]    
+        args["numCoAuthors"] = data[6]
+#                 # total of author appeared first
+        args["appearFirstAuthor"] = data[7]
 
-        
+#                 # total of author appeared last
+        args["appearLastAuthor"] = data[8]    
+   
     return render_template('searchauthor.html', args=args)
 
 @app.route("/")

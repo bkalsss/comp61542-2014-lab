@@ -246,6 +246,62 @@ class Database:
             for i in range(len(astats)) ]
         return (header, data)
 
+    def get_search_author(self, author):
+        
+        dat = [author, 0, 0, 0, 0, 0, 0, 0, 0]
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            for a in p.authors:
+                astats[a][p.pub_type] += 1
+
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+            for i in range(len(astats)) ]
+        print data
+        
+        for x in data:
+            #print 'x --- ', x
+            if author == x[0]:
+                
+                # get overall publications
+                dat[5] = x[5]
+                
+                # get number of conference paper
+                dat[1] = x[1]
+                
+                # get number of journal article
+                dat[2] = x[2]
+                
+                # get number of book
+                dat[3] = x[3]
+                
+                # get number of book chapters
+                dat[4] = x[4]
+
+        asss, ad = self.get_last_publications_by_author()
+        for z in ad:
+            if author == z[0]:
+              
+                # total of author appeared last
+                dat[8] = z[5]    
+
+        asss, ad = self.get_first_publications_by_author()
+        for y in ad:
+            #print 'x --- ', x
+            if author == y[0]:
+             
+                # total of author appeared first
+                dat[7] = y[5]
+
+        netdat = self.get_network_data()
+         
+        print 'get_coauthor_details ----', netdat[0]
+        for a, b in enumerate(netdat[0]):
+            print 'b --- ', b
+            if author == b[0]:
+                dat[6] = b[1]
+ 
+        return (dat)
+
     def get_first_publications_by_author(self): 
         header = ("Author", "Number of conference papers",
             "Number of journals", "Number of books",
