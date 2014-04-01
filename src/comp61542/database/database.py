@@ -1,4 +1,5 @@
 from comp61542.statistics import average
+import operator
 import itertools
 import numpy as np
 from xml.sax import handler, make_parser, SAXException
@@ -87,8 +88,8 @@ class Database:
                     display(self, coauthors, ca) for ca in coauthors[a] ]) ])
 
         return (header, data)
+    
     def get_coauthor_list(self, author):
-        print author
         author_id = self.author_idx[author]
         data = self._get_collaborations(author_id, True)
         dattta =  [ (self.authors[key].name, data[key])
@@ -97,9 +98,7 @@ class Database:
 
         for ix in dattta:
             if ix[0]!= author:
-                print ix[0]
                 dat.append(ix[0])
-        print dat
         return dat
 
     def get_average_authors_per_publication(self, av):
@@ -196,6 +195,7 @@ class Database:
             plist[p.pub_type] += 1
             for a in p.authors:
                 alist[p.pub_type].add(a)
+                
         # create union of all authors
         ua = alist[0] | alist[1] | alist[2] | alist[3]
 
@@ -207,7 +207,7 @@ class Database:
     def get_average_authors_per_publication_by_author(self, av):
         header = ("Author", "Number of conference papers",
             "Number of journals", "Number of books",
-            "Number of book chapers", "All publications")
+            "Number of book chapters", "All publications")
 
         astats = [ [[], [], [], []] for _ in range(len(self.authors)) ]
         for p in self.publications:
@@ -228,22 +228,23 @@ class Database:
             for a in p.authors:
                 if author == a:
                     num += 1
-        print num
         return num
 
     def get_publications_by_author(self):
         
-        header = ("Author", "Number of conference papers",
+        header = ("Author Last Name", "Author First Name", "Number of conference papers",
             "Number of journals", "Number of books",
-            "Number of book chapers", "Total")
+            "Number of book chapters", "Total")
 
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         for p in self.publications:
             for a in p.authors:
                 astats[a][p.pub_type] += 1
 
-        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+        data = [ [str(unicode(self.authors[i].name)).split()[-1]] + 
+                [' '.join(str(unicode(self.authors[i].name)).split()[0:len(self.authors[i].name.split())-1])] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
+        data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
 
     def get_search_author(self, author):
@@ -256,7 +257,7 @@ class Database:
 
         data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
-        print data
+
         
         for x in data:
             #print 'x --- ', x
@@ -293,47 +294,75 @@ class Database:
                 dat[7] = y[5]
 
         netdat = self.get_network_data()
-         
-        print 'get_coauthor_details ----', netdat[0]
+        
         for a, b in enumerate(netdat[0]):
-            print 'b --- ', b
             if author == b[0]:
                 dat[6] = b[1]
  
         return (dat)
 
+    def get_author_detail(self,author):
+        header = ("", "Number of conference papers",
+           "Number of journals", "Number of books",
+           "Number of book chapters", "Overall")
+        
+        astats = [ [0, 0, 0, 0] for _ in range(0, 4)]
+        rowHeader = ["Overall", "First", "Last", "Sole"] 
+
+        author_id = self.author_idx.get(author)
+        for p in self.publications:
+            
+            if author_id in p.authors:
+                astats[0][p.pub_type] += 1
+                
+                if (len(p.authors)>1):
+                    if author_id == p.authors[0]:
+                        astats[1][p.pub_type] += 1
+                    elif author_id == p.authors[::-1][0]:
+                        astats[2][p.pub_type] += 1
+                
+                elif (len(p.authors) == 1):
+                    astats[3][p.pub_type] += 1
+        
+        data = [[rowHeader[i]] + astats[i] + [sum(astats[i])] for i in range(len(astats))]
+        return (header, data)
+
     def get_first_publications_by_author(self): 
-        header = ("Author", "Number of conference papers",
+        header = ("Author Last Name", "Author First Name", "Number of conference papers",
             "Number of journals", "Number of books",
-            "Number of book chapers", "Total")
+            "Number of book chapters", "Total")
 
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         for p in self.publications:
-            print p.authors
             if len(p.authors) > 1 :
                 astats[p.authors[0]][p.pub_type] += 1
 
-        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+        data = [ [str(unicode(self.authors[i].name)).split()[-1]] + 
+                [' '.join(str(unicode(self.authors[i].name)).split()[0:len(self.authors[i].name.split())-1])] + 
+                astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
+        data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
 
     def get_last_publications_by_author(self): 
-        header = ("Author", "Number of conference papers",
+        header = ("Author Last Name", "Author First Name", "Number of conference papers",
             "Number of journals", "Number of books",
-            "Number of book chapers", "Total")
+            "Number of book chapters", "Total")
 
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
         for p in self.publications:
-            print len(p.authors)
             if len(p.authors) > 1 :
                 astats[p.authors[len(p.authors) - 1]][p.pub_type] += 1
             
-        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+        data = [ [str(unicode(self.authors[i].name)).split()[-1]] + 
+                [' '.join(str(unicode(self.authors[i].name)).split()[0:len(self.authors[i].name.split())-1])] + 
+                astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
+        data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
 
     def get_sole_author(self, pub_type):
-        header = ("Author", "First author",
+        header = ("Author Last Name", "Author First Name", "First author",
             "Last author", "Sole author")
         
         astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
@@ -352,8 +381,11 @@ class Database:
             if (len(p.authors) == 1 and (pub_type == 4 or pub_type == p.pub_type)):
                 astats3[p.authors[0]][p.pub_type] += 1
          
-        data = [ [self.authors[i].name] + [sum(astats[i])] + [sum(astats2[i])] + [sum(astats3[i])]
+        data = [ [str(unicode(self.authors[i].name)).split()[-1]] + 
+                [' '.join(str(unicode(self.authors[i].name)).split()[0:len(self.authors[i].name.split())-1])] + 
+                [sum(astats[i])] + [sum(astats2[i])] + [sum(astats3[i])]
             for i in range(len(astats)) ]
+        data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
     
     

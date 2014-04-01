@@ -134,23 +134,25 @@ def showSearchAuthor():
         # get overall publications
         args["overallPublications"] = data[5]
                  
-                # get number of conference paper
+        # get number of conference paper
         args["numConferencePaper"] = data[1]
-                 
-                # get number of journal article
+               
+        # get number of journal article
         args["numJournalArticle"] = data[2]
                  
-                # get number of book
+        # get number of book
         args["numBook"] = data[3]
                  
-                # get number of book chapters
+        # get number of book chapters
         args["numBookChapters"] = data[4]
         
+        # get number of co-authors
         args["numCoAuthors"] = data[6]
-#                 # total of author appeared first
+        
+        # total of author appeared first
         args["appearFirstAuthor"] = data[7]
 
-#                 # total of author appeared last
+        # total of author appeared last
         args["appearLastAuthor"] = data[8]    
    
     return render_template('searchauthor.html', args=args)
@@ -217,3 +219,21 @@ def showPublicationSummary(status):
         args["data"] = db.get_author_totals_by_year()
 
     return render_template('statistics_details.html', args=args)
+
+@app.route("/alldetails/<author_name>")
+def showALlDetails(author_name):
+#     author_name = "Stefano Ceri"
+#     print "alldetails/" + author_name 
+
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset, "id":"alldetails"}
+    
+    get_search_author = db.get_search_author(author_name)
+    print 
+    data = get_search_author
+    args["title"] = author_name + " Details"
+    args["data"] = db.get_author_detail(author_name)
+    args["co_no"] = data[6]    
+    
+    return render_template('authordetail.html', args=args)
