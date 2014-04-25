@@ -18,7 +18,7 @@
     <tr>
     {% for data_item in row %}
     	{% if data_item == row[0] and (args.title == "Author Publication" or "first_publication_autho" or "last_publication_author") %}
-      		<td><a href="/alldetails/{{row[1] + ' ' +  data_item  }}">{{ data_item }}</a></td>
+      		<td><a href="/alldetails/{{row[1]}}">{{ data_item }}</a></td>
       	{% else %}
       		<td>{{ data_item }}</td>
       	{% endif %}

@@ -278,14 +278,14 @@ class Database:
                 # get number of book chapters
                 dat[4] = x[4]
 
-        asss, ad = self.get_last_publications_by_author()
+        asss, ad = self.get_last_publications_by_author_full_name()
         for z in ad:
             if author == z[0]:
               
                 # total of author appeared last
                 dat[8] = z[5]    
 
-        asss, ad = self.get_first_publications_by_author()
+        asss, ad = self.get_first_publications_by_author_full_name()
         for y in ad:
             #print 'x --- ', x
             if author == y[0]:
@@ -344,6 +344,22 @@ class Database:
         data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
 
+    def get_first_publications_by_author_full_name(self):
+        header = ("Author", "Number of conference papers",
+            "Number of journals", "Number of books",
+            "Number of book chapters", "Total")
+
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            if len(p.authors) > 1 :
+                astats[p.authors[0]][p.pub_type] += 1
+
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
+            for i in range(len(astats)) ]
+
+        data = sorted(data, key=operator.itemgetter(0))
+        return (header, data)
+
     def get_last_publications_by_author(self): 
         header = ("Author Last Name", "Author First Name", "Number of conference papers",
             "Number of journals", "Number of books",
@@ -357,6 +373,21 @@ class Database:
         data = [ [str(unicode(self.authors[i].name)).split()[-1]] + 
                 [' '.join(str(unicode(self.authors[i].name)).split()[0:len(self.authors[i].name.split())-1])] + 
                 astats[i] + [sum(astats[i])]
+            for i in range(len(astats)) ]
+        data = sorted(data, key=operator.itemgetter(0))
+        return (header, data)
+
+    def get_last_publications_by_author_full_name(self):
+        header = ("Author", "Number of conference papers",
+            "Number of journals", "Number of books",
+            "Number of book chapters", "Total")
+
+        astats = [ [0, 0, 0, 0] for _ in range(len(self.authors)) ]
+        for p in self.publications:
+            if len(p.authors) > 1 :
+                astats[p.authors[len(p.authors) - 1]][p.pub_type] += 1
+
+        data = [ [self.authors[i].name] + astats[i] + [sum(astats[i])]
             for i in range(len(astats)) ]
         data = sorted(data, key=operator.itemgetter(0))
         return (header, data)
