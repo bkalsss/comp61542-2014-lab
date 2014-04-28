@@ -235,5 +235,5 @@ def showALlDetails(author_name):
     args["title"] = author_name + " Details"
     args["data"] = db.get_author_detail(author_name)
     args["co_no"] = data[6]    
-    
+
     return render_template('authordetail.html', args=args)
