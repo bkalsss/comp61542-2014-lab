@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ args.title }}{% endblock %}
+{% block content %}
+
+<h1>{{ args.title }}</h1>
+
+<table border="1" id="myTable" class="tablesorter">
+  <thead>
+    <tr>
+    {% for column in args.data[0] %}
+      <th>{{ column }}</th>
+    {% endfor %}
+    </tr>
+  </thead>
+
+  <tbody>
+  {% for row in args.data[1] %}
+    <tr>
+    {% for data_item in row %}
+    	{% if data_item == row[0] and (args.title == "Author Publication" or "first_publication_autho" or "last_publication_author") %}
+      		<td><a href="/alldetails/{{row[1] }}">{{ data_item }}</a></td>
+      	{% else %}
+      		<td>{{ data_item }}</td>
+      	{% endif %}
+    {% endfor %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

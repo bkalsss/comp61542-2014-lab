@@ -188,23 +188,23 @@ def showPublicationSummary(status):
     if (status == "publication_summary"):
         args["title"] = "Publication Summary"
         args["data"] = db.get_publication_summary()
-
-    if (status == "publication_author"):
+        return render_template('statistics_details_no_names.html', args=args)
+    elif (status == "publication_author"):
         args["title"] = "Author Publication"
         args["data"] = db.get_publications_by_author()
 
-    if (status == "first_publication_author"):
+    elif (status == "first_publication_author"):
         args["title"] = "First Author Publication"
         args["data"] = db.get_first_publications_by_author()
 
-    if (status == "last_publication_author"):
+    elif (status == "last_publication_author"):
         args["title"] = "Last Author Publication"
         args["data"] = db.get_last_publications_by_author()
 
-    if (status == "publication_year"):
+    elif (status == "publication_year"):
         args["title"] = "Publication by Year"
         args["data"] = db.get_publications_by_year()
-
+        return render_template('statistics_details_no_names.html', args=args)
 #     if (status == "sole_author"):
 #         PUB_TYPES = ["Conference Papers", "Journals", "Books", "Book Chapters", "All Publications"]
 #         pub_type = 4
@@ -214,10 +214,10 @@ def showPublicationSummary(status):
 #         args["title"] = "Sole Author"
 #         args["data"] = db.get_sole_author()
 
-    if (status == "author_year"):
+    elif (status == "author_year"):
         args["title"] = "Author by Year"
         args["data"] = db.get_author_totals_by_year()
-
+        return render_template('statistics_details_no_names.html', args=args)
     return render_template('statistics_details.html', args=args)
 
 @app.route("/alldetails/<author_name>")
