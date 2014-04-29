@@ -3,7 +3,10 @@
 
   <head>
     <title>{% block title %}{% endblock %}</title>
-    
+    <meta charset="iso-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='styles/main.css') }}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{ url_for('static', filename='styles/mediaqueries.css') }}" rel="stylesheet" type="text/css" media="all">
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src="http://tablesorter.com/__jquery.tablesorter.min.js"></script>
 	<script type="text/javascript">
@@ -16,19 +19,55 @@
     
   </head>
 
-  <body>
-    <div id="page">
-      <div id="header">
-        <h1>COMP61542: {{ args.dataset }}</h1>
+  <body class="">
+  <div class="wrapper row1">
+  <header id="header" class="full_width clear">
+    <hgroup>
+      <h1>COMP61542: {{ args.dataset }}</h1>
+       <br/>
+      <a href="/">Home</a>
+    </hgroup>
+  </header>
+  </div>
 
-        <div id="navigation">
-          <a href="/">Home</a>
-        </div>
-      </div>
+  <div class="wrapper row2">
+  <nav id="topnav">
+    <ul class="clear">
+      <li><a class="drop" href="#" title="Publications">Publications</a>
+        <ul>
+            <li><a href="/statisticsdetails/publication_summary" title="Publication Summary">Publication Summary</a>
+            <li><a href="/statisticsdetails/publication_author" title="Publication by Author">Publication by Author</a></li>
+            <li><a href="/statisticsdetails/first_publication_author" title="First Publications by Author">First Publications by Author</a></li>
+            <li><a href="/statisticsdetails/last_publication_author" title="Last Publications by Author">Last Publications by Author</a></li>
+            <li><a href="/statisticsdetails/publication_year" title="Publication by Year">Publication by Year</a></li>
+        </ul>
+      </li>
+      <li>
+          <a class="drop" href="#" title="Authors">Authors</a>
+          <ul>
+              <li><a href="/statisticsdetails/author_year" title="Author by Year">Author by Year</a></li>
+              <li><a href="/averages" title="Averaged Year Data">Averaged Year Data</a></li>
+              <li><a href="/coauthors" title="Co-Authors">Co-Authors</a></li>
+              <li><a href="/searchauthor" title="Search Author">Search Author</a></li>
+              <li><a href="/searchauthortofindcoauthors" title="Search Author To Find Co-Authors">Search Author To Find Co-Authors</a></li>
+              <li><a href="/soleauthor" title="Sole Authors">Sole Authors</a></li>
+          </ul>
+      </li>
+
+   </ul>
+  </nav>
+</div>
 
       <div id="content">
         {% block content %}{% endblock %}
       </div>
-    </div>
+
+<div class="wrapper row4">
+  <div id="copyright" class="clear">
+    <p class="fl_left">Copyright &copy; 2013 - All Rights Reserved - <a href="#">Domain Name</a></p>
+    <p class="fl_right">Template by <a href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
+  </div>
+</div>
+
   </body>
 </html>

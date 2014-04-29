@@ -220,6 +220,32 @@ def showPublicationSummary(status):
         return render_template('statistics_details_no_names.html', args=args)
     return render_template('statistics_details.html', args=args)
 
+@app.route("/authorsDegOfSep")
+def showDegreeOfSeparation():
+    dataset = app.config['DATASET']
+    db = app.config['DATABASE']
+    args = {"dataset":dataset}
+
+    args["title"] = "Degree Of Separation"
+
+    author_1 = " - "
+    author_2 = " - "
+    separation = " - "
+    if "author1" in request.args and "author2" in request.args:
+        author_1 = request.args.get("author1")
+        author_2 = request.args.get("author2")
+        db.get_result_authors_separation()
+        separation = db.get_authors_degree_of_separation(db.author_idx[author_1], db.author_idx[author_2])
+
+    if separation == -1:
+        separation = "Z"
+    args["columns"] = ("Author 1", "Author 2", "Authors' Degree of Separation")
+    args["author_names"] = db.author_idx.keys()
+    args["author1"] = author_1
+    args["author2"] = author_2
+    args["degree_of_separation"] = separation
+    return render_template("authorsDegOfSep.html", args=args)
+
 @app.route("/alldetails/<author_name>")
 def showALlDetails(author_name):
 #     author_name = "Stefano Ceri"

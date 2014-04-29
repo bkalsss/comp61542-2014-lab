@@ -88,7 +88,47 @@ class Database:
                     display(self, coauthors, ca) for ca in coauthors[a] ]) ])
 
         return (header, data)
-    
+    def get_authors_degree_of_separation(self, author1, author2):
+        if author1 == author2:
+            return 0
+        X=[]
+        X.append(author1)
+
+        separation = -1
+        searchedAuthor = [ False for z in range(0, len(self.authors))]
+        variable = -2
+
+        X.append(variable)
+
+        while len(X) > 0:
+            if X[0] == author2:
+                return separation
+            if X[0] == variable:
+                separation += 1
+                X.append(variable)
+                X.pop(0)
+            if X[0] != variable and not searchedAuthor[X[0]]:
+                searchedAuthor[X[0]] = True
+
+                separation_list = [ author for author in range(0, len(self.authors))\
+                                   if self.result_authors_separation[X[0]][author] == 1 ]
+
+                for coauthor in separation_list:
+                    if coauthor != X[0]:
+                        X.append(coauthor)
+
+            X.pop(0)
+
+        return -1
+
+    def get_result_authors_separation(self):
+        self.result_authors_separation = [ [0 for x in range(0, len(self.authors))]
+                                            for y in range(0, len(self.authors)) ]
+        for pub in self.publications:
+            for author1 in pub.authors:
+                for author2 in pub.authors:
+                    self.result_authors_separation[author1][author2] = 1
+
     def get_coauthor_list(self, author):
         author_id = self.author_idx[author]
         data = self._get_collaborations(author_id, True)
